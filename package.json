@@ -1,0 +1,5 @@
+{
+    "name": "node-chat",
+    "description": "Telnet chat server",
+    "version": "0.0.1"
+}
