@@ -18,12 +18,14 @@ require('colors');
  * Server
  */
 
+// variables
 var count = 0,
     users = {};
 
 var server = net.createServer(function (conn) {
     conn.setEncoding('utf8');
 
+    // welcome
     var nickname;
     conn.write(
         "\n > Welcome to " + "node-chat".green + "!" +
@@ -40,8 +42,9 @@ var server = net.createServer(function (conn) {
         }
     }
 
+    // data callback
     conn.on('data', function (data) {
-        data = data.replace("\r\n", "");
+        data = data.replace("\r\n", ""); // remove the return carracter
 
         if (!nickname) {
             // new user
@@ -60,6 +63,7 @@ var server = net.createServer(function (conn) {
         }
     });
 
+    // close callback
     conn.on('close', function () {
         count--;
         delete users[nickname];
@@ -73,5 +77,5 @@ var server = net.createServer(function (conn) {
  */
 
 server.listen(3000, function () {
-    console.log("    Listening on port 3000".blue);
+    console.log("Listening on port 3000".blue);
 })
