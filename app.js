@@ -18,12 +18,14 @@ require('colors');
  * Server
  */
 
+// variables
 var count = 0,
     users = {};
 
 var server = net.createServer(function (conn) {
     conn.setEncoding('utf8');
 
+    // welcome
     var nickname;
     conn.write(
         "\n > Welcome to " + "node-chat".green + "!" +
@@ -32,8 +34,17 @@ var server = net.createServer(function (conn) {
     );
     count++;
 
+    function broadcast (msg, exeptMyself) {
+        for (var i in users) {
+            if (!exceptMyself || i != nickname) {
+                users[i].write(msg);
+            }
+        }
+    }
+
+    // data callback
     conn.on('data', function (data) {
-        data = data.replace("\r\n", "");
+        data = data.replace("\r\n", ""); // remove the return carracter
 
         if (!nickname) {
             // new user
@@ -44,24 +55,19 @@ var server = net.createServer(function (conn) {
                 nickname = data;
                 users[nickname] = conn;
 
-                for (var i in users) {
-                    users[i].write(" > ".concat(nickname, " joined chat\n").grey);
-                }
+                broadcast(" > ".concat(nickname, " joined chat\n").grey);
             }
         } else {
             // chat message
-            for (var i in users) {
-                if (i != nickname) { // not send to self
-                    users[i].write(" > ".concat(nickname, ": ").blue + data + "\n");
-                }
-            }
+            broadcast(" > ".concat(nickname, ": ").blue + data + "\n", true);
         }
-        console.log(data);
     });
 
+    // close callback
     conn.on('close', function () {
         count--;
         delete users[nickname];
+        broadcast(" > ".concat(nickname, " left chat\n".grey));
     })
 });
 
@@ -71,5 +77,5 @@ var server = net.createServer(function (conn) {
  */
 
 server.listen(3000, function () {
-    console.log("    Listening on port 3000".blue);
+    console.log("Listening on port 3000".blue);
 })
