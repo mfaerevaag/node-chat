@@ -12,3 +12,7 @@ Connect with:
 Run server with:
 
     $ node app
+
+### Disclamer
+
+Based of example in [Smashing Node.js](smashingnode.com), by Guillermo Rauch.
