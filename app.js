@@ -34,11 +34,9 @@ var server = net.createServer(function (conn) {
     );
     count++;
 
-    function broadcast (msg, exeptMyself) {
+    function broadcast (msg) {
         for (var i in users) {
-            if (!exceptMyself || i != nickname) {
-                users[i].write(msg);
-            }
+            users[i].write(msg);
         }
     }
 
@@ -59,7 +57,7 @@ var server = net.createServer(function (conn) {
             }
         } else {
             // chat message
-            broadcast(" > ".concat(nickname, ": ").blue + data + "\n", true);
+            broadcast(" > ".concat(nickname, ": ").blue + data + "\n");
         }
     });
 
