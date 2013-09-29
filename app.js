@@ -19,6 +19,8 @@ require('colors');
  */
 
 // variables
+var PORT = 3000;
+
 var count = 0,
     users = {};
 
@@ -74,6 +76,6 @@ var server = net.createServer(function (conn) {
  * Listen
  */
 
-server.listen(3000, function () {
-    console.log("Listening on port 3000".blue);
+server.listen(PORT, function () {
+    console.log("Listening on port ".concat(PORT).blue);
 })
